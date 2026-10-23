@@ -1,0 +1,69 @@
+
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+double U(double x) {
+    return 50 * pow(x, 0.1);
+}
+
+int main() {
+    double a = 50;
+    double c = 0.1;
+
+    double x1 = 20;
+    double x2 = 30;
+
+    double expected_win = (x1 + x2) / 2;
+
+    double expected_utility =
+        a / (x2 - x1) *
+        (pow(x2, c + 1) - pow(x1, c + 1)) / (c + 1);
+
+    double equivalent = pow(expected_utility / a, 1 / c);
+
+    double risk_premium = expected_win - equivalent;
+
+    double utility_expected = U(expected_win);
+
+    cout << fixed << setprecision(2);
+
+    cout << "Початковий виграш x1 = " << x1 << endl;
+    cout << "Кінцевий виграш x2 = " << x2 << endl;
+
+    cout << "Функція корисності: U(x) = 50 * x^0.1" << endl;
+
+    cout << "\nСподіваний виграш: "
+         << expected_win << endl;
+
+    cout << "Корисність сподіваного виграшу: "
+         << utility_expected << endl;
+
+    cout << "Сподівана корисність лотереї: "
+         << expected_utility << endl;
+
+    cout << "Детермінований еквівалент: "
+         << equivalent << endl;
+
+    cout << "Премія за ризик: "
+         << risk_premium << endl;
+
+    cout << "\nВисновок:" << endl;
+
+    if (risk_premium > 0) {
+        cout << "Особа не схильна до ризику." << endl;
+        cout << "Вона готова відмовитися від частини "
+             << "сподіваного виграшу заради гарантованого доходу."
+             << endl;
+    }
+    else if (risk_premium < 0) {
+        cout << "Особа схильна до ризику." << endl;
+    }
+    else {
+        cout << "Особа нейтральна до ризику." << endl;
+    }
+
+    return 0;
+}
