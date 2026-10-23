@@ -1,0 +1,71 @@
+
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+int main() {
+    double p1_old = 0.2, x1_old = 80;
+    double p2_old = 0.7, x2_old = 50;
+    double p3_old = 0.1, x3_old = -20;
+
+    double p1_new = 0.2, x1_new = 300;
+    double p2_new = 0.5, x2_new = 100;
+    double p3_new = 0.3, x3_new = -100;
+
+    double m1 = p1_old * x1_old + p2_old * x2_old + p3_old * x3_old;
+    double m2 = p1_new * x1_new + p2_new * x2_new + p3_new * x3_new;
+
+    double v1 = pow(x1_old - m1, 2) * p1_old
+              + pow(x2_old - m1, 2) * p2_old
+              + pow(x3_old - m1, 2) * p3_old;
+    double risk1 = sqrt(v1);
+
+    double v2 = pow(x1_new - m2, 2) * p1_new
+              + pow(x2_new - m2, 2) * p2_new
+              + pow(x3_new - m2, 2) * p3_new;
+    double risk2 = sqrt(v2);
+
+    double cv1 = risk1 / m1;
+    double cv2 = risk2 / m2;
+
+    cout << fixed << setprecision(2);
+
+    cout << "Стара модель міксера:" << endl;
+    cout << "  Очікуваний прибуток (m1) = " << m1 << endl;
+    cout << "  Дисперсія (v1) = " << v1 << endl;
+    cout << "  Ризик (risk1) = " << risk1 << endl;
+    cout << "  Коефіцієнт варіації (cv1) = "
+         << setprecision(4) << cv1 << setprecision(2) << endl;
+
+    cout << "\nНова модель міксера:" << endl;
+    cout << "  Очікуваний прибуток (m2) = " << m2 << endl;
+    cout << "  Дисперсія (v2) = " << v2 << endl;
+    cout << "  Ризик (risk2) = " << risk2 << endl;
+    cout << "  Коефіцієнт варіації (cv2) = "
+         << setprecision(4) << cv2 << setprecision(2) << endl;
+
+    cout << "\n--------------------------------------------------" << endl;
+    cout << "Результат порівняння:" << endl;
+
+    if (m1 > m2) {
+        cout << "Стара модель має більший очікуваний прибуток." << endl;
+    } else if (m2 > m1) {
+        cout << "Нова модель має більший очікуваний прибуток." << endl;
+    } else {
+        cout << "Очікуваний прибуток обох моделей однаковий." << endl;
+    }
+
+    if (cv1 < cv2) {
+        cout << "Стара модель має менший відносний ризик." << endl;
+    } else if (cv2 < cv1) {
+        cout << "Нова модель має менший відносний ризик." << endl;
+    } else {
+        cout << "Відносний ризик обох моделей однаковий." << endl;
+    }
+
+    cout << "\nРекомендація: залишити стару модель міксера." << endl;
+
+    return 0;
+}
