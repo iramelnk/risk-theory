@@ -1,0 +1,49 @@
+
+#include <iostream>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+int ratingValue(string rating) {
+    if (rating == "дуже погано") return 1;
+    if (rating == "погано") return 3;
+    if (rating == "посередньо") return 6;
+    if (rating == "добре") return 8;
+    if (rating == "дуже добре") return 10;
+
+    return 0;
+}
+
+double calculateUtility(string rain, string sunny, double chance) {
+    return ratingValue(rain) * chance +
+           ratingValue(sunny) * (1 - chance);
+}
+
+void chooseActivity(double rainChance) {
+    double stayHome = calculateUtility("добре", "погано", rainChance);
+    double goForest = calculateUtility("дуже погано", "дуже добре", rainChance);
+
+    cout << fixed << setprecision(2);
+
+    cout << "\nЙмовірність дощу: " << rainChance << endl;
+    cout << "Корисність вдома: " << stayHome << endl;
+    cout << "Корисність у лісі: " << goForest << endl;
+
+    if (stayHome > goForest) {
+        cout << "Рекомендація: залишитися вдома." << endl;
+    }
+    else if (goForest > stayHome) {
+        cout << "Рекомендація: поїхати в ліс." << endl;
+    }
+    else {
+        cout << "Обидва варіанти однаково корисні." << endl;
+    }
+}
+
+int main() {
+    chooseActivity(0.47);
+    chooseActivity(0.75);
+
+    return 0;
+}
