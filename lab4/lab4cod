@@ -1,1 +1,135 @@
 
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main() {
+    double m1 = 10;
+    double m2 = 30;
+    double m3 = 45;
+
+    double risk1 = 0;
+    double risk2 = 10;
+    double risk3 = 15;
+
+    double r12 = 0;
+    double r13 = 0;
+    double r23 = -0.8;
+
+    double disp1 = pow(risk1, 2);
+    double disp2 = pow(risk2, 2);
+    double disp3 = pow(risk3, 2);
+
+    double cov12 = r12 * risk1 * risk2;
+    double cov13 = r13 * risk1 * risk3;
+    double cov23 = r23 * risk2 * risk3;
+
+    // a
+    cout << "a) Efektyvni portfeli:" << endl;
+
+    for (int i = 10; i <= 45; i += 5) {
+        double mp = i;
+
+        double a = (mp - m1) / (m3 - m1);
+        double b = -(m2 - m1) / (m3 - m1);
+
+        double A = disp2 + disp3 * pow(b, 2)
+                   + 2 * b * cov23;
+        double B = 2 * disp3 * a * b
+                   + 2 * a * cov23;
+
+        double x2 = -B / (2 * A);
+
+        double max1 = (mp - m1) / (m2 - m1);
+        double max2 = (m3 - mp) / (m3 - m2);
+
+        if (x2 < 0) x2 = 0;
+        if (x2 > max1) x2 = max1;
+        if (x2 > max2) x2 = max2;
+
+        double x3 = a + b * x2;
+        double x1 = 1 - x2 - x3;
+
+        double risk = sqrt(
+            pow(x1, 2) * disp1 +
+            pow(x2, 2) * disp2 +
+            pow(x3, 2) * disp3 +
+            2 * x1 * x2 * cov12 +
+            2 * x1 * x3 * cov13 +
+            2 * x2 * x3 * cov23
+        );
+
+        cout << "mp = " << mp << "%" << endl;
+        cout << "x1 = " << x1 << endl;
+        cout << "x2 = " << x2 << endl;
+        cout << "x3 = " << x3 << endl;
+        cout << "risk = " << risk << "%" << endl << endl;
+    }
+
+    // b
+    double m_b = 25;
+
+    double a_b = (m_b - m1) / (m3 - m1);
+    double b_b = -(m2 - m1) / (m3 - m1);
+
+    double A = disp2 + disp3 * pow(b_b, 2)
+               + 2 * b_b * cov23;
+    double B_b = 2 * disp3 * a_b * b_b
+                 + 2 * a_b * cov23;
+
+    double x2_b = -B_b / (2 * A);
+    double x3_b = a_b + b_b * x2_b;
+    double x1_b = 1 - x2_b - x3_b;
+
+    double risk_b = sqrt(
+        pow(x1_b, 2) * disp1 +
+        pow(x2_b, 2) * disp2 +
+        pow(x3_b, 2) * disp3 +
+        2 * x1_b * x2_b * cov12 +
+        2 * x1_b * x3_b * cov13 +
+        2 * x2_b * x3_b * cov23
+    );
+
+    cout << "b) " << endl;
+    cout << "x1 = " << x1_b << endl;
+    cout << "x2 = " << x2_b << endl;
+    cout << "x3 = " << x3_b << endl;
+    cout << "mp = " << m_b << "%" << endl;
+    cout << "risk = " << risk_b << "%" << endl << endl;
+
+    // v
+    double m_v = 40;
+
+    double x1_v = 0;
+    double x2_v = (m3 - m_v) / (m3 - m2);
+    double x3_v = 1 - x2_v;
+
+    double risk_v = sqrt(
+        pow(x1_v, 2) * disp1 +
+        pow(x2_v, 2) * disp2 +
+        pow(x3_v, 2) * disp3 +
+        2 * x1_v * x2_v * cov12 +
+        2 * x1_v * x3_v * cov13 +
+        2 * x2_v * x3_v * cov23
+    );
+
+    cout << "v) " << endl;
+    cout << "x1 = " << x1_v << endl;
+    cout << "x2 = " << x2_v << endl;
+    cout << "x3 = " << x3_v << endl;
+    cout << "mp = " << m_v << "%" << endl;
+    cout << "risk = " << risk_v << "%" << endl << endl;
+
+    // g
+    cout << "g) " << endl;
+    cout << "A1: risk = " << risk1 << "%" << endl;
+    cout << "A2: risk = " << risk2 << "%" << endl;
+    cout << "A3: risk = " << risk3 << "%" << endl;
+    cout << "b: mp = " << m_b
+         << "%, risk = " << risk_b << "%" << endl;
+    cout << "v: mp = " << m_v
+         << "%, risk = " << risk_v << "%" << endl;
+
+    return 0;
+}
+
